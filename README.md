@@ -14,3 +14,9 @@ git clone https://github.com/LazyVim/starter ~/.config/nvim
 ```bash
  git clone https://github.com/the-code-samurai-97/lazyvim-config ~/.config/nvim 
 ```
+## Installation
+
+https://www.lazyvim.org/installation
+
+
+
