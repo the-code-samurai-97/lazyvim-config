@@ -1,21 +1,25 @@
 return {
-  "nvimtools/none-ls.nvim",
-  opts = {
-    sources = {
-      require("null-ls").builtins.formatting.buildifier,
-    },
-    on_attach = function(client, bufnr)
-      if client.supports_method("textDocument/formatting") then
-        local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = augroup,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format({ bufnr = bufnr })
-          end,
-        })
-      end
+  -- Remove null-ls if you have it
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    enabled = false, -- Disable null-ls
+  },
+
+  -- Add none-ls
+  {
+    "nvimtools/none-ls.nvim",
+    event = "LazyFile",
+    dependencies = { "mason.nvim" },
+    opts = function()
+      local nls = require("null-ls")
+      return {
+        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        sources = {
+
+          -- Bazel formatting
+          nls.builtins.formatting.buildifier, -- Bazel files (BUILD, WORKSPACE, .bzl)
+        },
+      }
     end,
   },
 }
