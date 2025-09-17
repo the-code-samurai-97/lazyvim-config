@@ -34,6 +34,22 @@ vim.filetype.add({
     ["%.veh$"] = "yaml", -- Fixed the pattern (was [".veh"])
     ["%.data$"] = "csv",
   },
+  extension = {
+    [".bazelrc"] = "bazelrc",
+    ["bzl"] = "bazel",
+    ["bzlmod"] = "bazel",
+    ["BUILD"] = "bazel",
+    ["BUILD.bazel"] = "bazel",
+    ["WORKSPACE"] = "bazel",
+    ["bzlproj"] = "bazel",
+    ["data"] = "csv",
+  },
+  pattern = {
+    ["%.bazel$"] = "bazel",
+    ["%.bzl$"] = "bazel",
+    ["BUILD"] = "bazel",
+    ["BUILD%.bazel$"] = "bazel",
+  },
 })
 
 -- -- Add your shell's PATH to Neovim's PATH
