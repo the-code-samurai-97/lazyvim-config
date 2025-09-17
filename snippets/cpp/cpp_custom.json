@@ -1,0 +1,56 @@
+{
+  "Current Date Time": {
+    "prefix": "datetime",
+    "body": [
+      "#include <chrono>",
+      "#include <format>",
+      "#include <string>",
+      "",
+      "std::string $0GetCurrentDateTime() noexcept{",
+      " const auto now = std::chrono::system_clock::now();",
+      " const auto time_point = std::chrono::floor<std::chrono::seconds>(now);",
+      "",
+      " return std::format(\"{:%Y-%m-%d %H:%M:%S}\", time_point);",
+      "}"
+    ],
+    "description": "Function to get current date and time in YYYY-MM-DD HH:MM:SS format"
+  },
+  "High Res Timer": {
+    "prefix": "highrestimer",
+    "body": [
+      "#include <chrono>",
+      "#include <iostream>",
+      "#include <string>",
+      "",
+      "class HighResTimer final { ",
+      " public: ",
+      "   explicit constexpr HighResTimer() noexcept { Reset();}",
+      "",
+      "   void Reset() noexcept {start_time_ = std::chrono::high_resolution_clock::now();}",
+      "",
+      "   void StopAndPrint(const std::string& message = \"Execution time\") noexcept {",
+      "     const auto end_time = std::chrono::high_resolution_clock::now();",
+      "     const auto duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(end_time -start_time_);",
+      "     const float duration_ms = static_cast<float>(duration_ns.count()) * 0.000001F;",
+      "     std::cout << message << \": \" << duration_ms << \" milliseconds.\" << std::endl;",
+      "   }",
+      "",
+      " private:",
+      "  std::chrono::time_point<std::chrono::high_resolution_clock> start_time_;",
+      "};",
+      "// // Example Usage:",
+      "// // Code to measure...",
+      "HighResTimer high_res_timer_1;",
+      "high_res_timer_1.StopAndPrint();"
+    ],
+    "description": "high resolution timer class to measure execution time"
+  },
+  "Your Custom Snippet": {
+    "prefix": "customsnippet",
+    "body": [
+      "// Add your snippet content here",
+      "$0"
+    ],
+    "description": "Description of your custom snippet"
+  }
+}

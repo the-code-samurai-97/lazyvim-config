@@ -3,7 +3,36 @@ require("config.lazy")
 --
 vim.filetype.add({
   filename = {
-    [".bazelrc"] = "bazelrc",
+    [".bazelrc"] = "sh",
+  },
+  extension = {
+    [".bzl"] = "bazel",
+    [".bazel.tpl"] = "bazel",
+    ["bzlmod"] = "bazel",
+    ["BUILD"] = "bazel",
+    ["BUILD.bazel"] = "bazel",
+    ["WORKSPACE"] = "bazel",
+    ["workspace"] = "bazel",
+    ["bzlproj"] = "bazel",
+    ["data"] = "csv",
+    ["scn"] = "yaml",
+    ["lola"] = "yaml",
+    ["veh"] = "yaml",
+    ["tpp"] = "cpp",
+  },
+  pattern = {
+    ["%.bazel$"] = "bazel",
+    ["%.bazel.%"] = "bazel",
+    ["%.tpl$"] = "bazel",
+    ["bzl"] = "bazel",
+    ["BUILD"] = "bazel",
+    ["BUILD%.bazel$"] = "bazel",
+    ["%.bazelrc$"] = "bazel", -- Added the missing .bazelrc pattern
+    ["%.tpp$"] = "cpp", -- Fixed the pattern (was [".%pp$"])
+    ["%.lola$"] = "yaml", -- Fixed the pattern (was [".lola"])
+    ["%.scn$"] = "yaml", -- Fixed the pattern (was [".scn"])
+    ["%.veh$"] = "yaml", -- Fixed the pattern (was [".veh"])
+    ["%.data$"] = "csv",
   },
   extension = {
     [".bazelrc"] = "bazelrc",
