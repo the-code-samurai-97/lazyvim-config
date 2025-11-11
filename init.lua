@@ -1,13 +1,24 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
 --
+
+require("catppuccin").setup({
+  flavour = "mocha", -- "latte", "frappe", "macchiato", "mocha"
+  -- other config options if needed
+})
+
+vim.cmd.colorscheme("catppuccin")
+---
 vim.filetype.add({
   filename = {
     [".bazelrc"] = "sh",
+    [".yamllint"] = "yaml",
+    ["jenkinsfile"] = "groovy",
   },
   extension = {
     [".bzl"] = "bazel",
     [".bazel.tpl"] = "bazel",
+    [".msg"] = "rosmsg",
     ["bzlmod"] = "bazel",
     ["BUILD"] = "bazel",
     ["BUILD.bazel"] = "bazel",
@@ -19,6 +30,8 @@ vim.filetype.add({
     ["lola"] = "yaml",
     ["veh"] = "yaml",
     ["tpp"] = "cpp",
+    ["cu"] = "cpp",
+    ["cuh"] = "cpp",
   },
   pattern = {
     ["%.bazel$"] = "bazel",
@@ -33,22 +46,6 @@ vim.filetype.add({
     ["%.scn$"] = "yaml", -- Fixed the pattern (was [".scn"])
     ["%.veh$"] = "yaml", -- Fixed the pattern (was [".veh"])
     ["%.data$"] = "csv",
-  },
-  extension = {
-    [".bazelrc"] = "bazelrc",
-    ["bzl"] = "bazel",
-    ["bzlmod"] = "bazel",
-    ["BUILD"] = "bazel",
-    ["BUILD.bazel"] = "bazel",
-    ["WORKSPACE"] = "bazel",
-    ["bzlproj"] = "bazel",
-    ["data"] = "csv",
-  },
-  pattern = {
-    ["%.bazel$"] = "bazel",
-    ["%.bzl$"] = "bazel",
-    ["BUILD"] = "bazel",
-    ["BUILD%.bazel$"] = "bazel",
   },
 })
 
@@ -70,3 +67,15 @@ end, { noremap = true, silent = true, desc = "Copy absolute file path to clipboa
 
 -- Set to `false` to globally disable all snacks animations
 vim.g.snacks_animate = false
+
+-- Center after half-page and search movements
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
+--
+-- local mem = require("memlayout")
+--
+-- -- Get all layouts as a Lua table
+-- local layouts = mem.get_record_layouts()
+--
+-- -- Print it nicely
+-- print(vim.inspect(layouts))

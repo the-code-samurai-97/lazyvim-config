@@ -1,0 +1,47 @@
+{
+  "Cuda High Res Timer": {
+    "prefix": "cudahighrestimer",
+    "body": [
+      "#include <cuda_runtime.h>",
+      "",
+      "class CudaHighResTimer final {",
+      " public:",
+      "  explicit CudaHighResTimer() noexcept {",
+      "    cudaEventCreate(&start_event_);",
+      "    cudaEventCreate(&stop_event_);",
+      "    Reset();",
+      "  }",
+      "",
+      "  ~CudaHighResTimer() noexcept {",
+      "    cudaEventDestroy(start_event_);",
+      "    cudaEventDestroy(stop_event_);",
+      "  }",
+      "",
+      "  void Reset() noexcept { cudaEventRecord(start_event_, 0); }",
+      "",
+      "  void StopAndPrint(const std::string& message = \"Execution time\") noexcept {",
+      "    cudaEventRecord(stop_event_, 0);",
+      "    cudaEventSynchronize(stop_event_);",
+      "",
+      "    float duration_ms;",
+      "    cudaEventElapsedTime(&duration_ms, start_event_, stop_event_);",
+      "",
+      "    printf(\"\\t\\t%s: %.5f milliseconds. \\n \", message.c_str(), duration_ms);",
+      "  }",
+      "",
+      " private:",
+      "  cudaEvent_t start_event_;",
+      "  cudaEvent_t stop_event_;",
+      "};"
+    ],
+    "description": "high resolution timer class to measure execution time"
+  },
+  "Your Custom Snippet": {
+    "prefix": "customsnippet",
+    "body": [
+      "// Add your snippet content here",
+      "$0"
+    ],
+    "description": "Description of your custom snippet"
+  }
+}

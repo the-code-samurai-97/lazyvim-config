@@ -24,7 +24,7 @@ return {
     },
     keys = {
       { "<leader>cv", "<cmd>CsvViewEnable display_mode=border<cr>", desc = "CSV View" },
-      { "<leader>cr", "<cmd>CsvViewDisable<cr>", desc = "CSV Reset" },
+      -- { "<leader>cr", "<cmd>CsvViewDisable<cr>", desc = "CSV Reset" },
     },
   },
 }
