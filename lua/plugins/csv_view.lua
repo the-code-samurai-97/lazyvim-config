@@ -23,7 +23,7 @@ return {
       },
     },
     keys = {
-      { "<leader>cv", "<cmd>CsvViewEnable display_mode=border<cr>", desc = "CSV View" },
+      -- { "<leader>cv", "<cmd>CsvViewEnable display_mode=border<cr>", desc = "CSV View" },
       -- { "<leader>cr", "<cmd>CsvViewDisable<cr>", desc = "CSV Reset" },
     },
   },
