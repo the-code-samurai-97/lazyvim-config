@@ -10,9 +10,13 @@ return {
     config = function()
       local fzf_lua = require("fzf-lua")
       fzf_lua.setup({
+        fzf_opts = {
+          -- This forces exact matching globally for all fzf-lua pickers
+          ["--exact"] = "",
+        },
         files = {
           -- Exclude deprecated directory from file search --follow --hidden
-          fd_opts = " --no-ignore --exclude .git --exclude deprecated",
+          fd_opts = "--no-ignore --exclude .git --exclude clangd --exclude bazel-bin --exclude bazel-out --exclude bazel-testlogs  --exclude deprecated ",
         },
         grep = {
           -- --no-ignore --hidden --follow
@@ -53,7 +57,7 @@ return {
             },
           },
           fzf_opts = {
-            ["--layout"] = "reverse",
+            ["--layout"] = "default",
             ["--info"] = "inline",
           },
         })

@@ -1,0 +1,184 @@
+{
+  "cc_library": {
+    "prefix": "cc_library",
+    "body": [
+      "load(\"@rules_cc//cc:defs.bzl\", \"cc_library\")",
+      "",
+      "cc_library(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.cpp\"],",
+      "    hdrs = [\"$1.hpp\"],",
+      "    includes = [\"include\"],",
+      "    visibility = [\"//visibility:public\"],",
+      "    deps = [\"$0\"],",
+      ")"
+    ],
+    "description": "C++ library with load statement"
+  },
+  "cc_binary": {
+    "prefix": "cc_binary",
+    "body": [
+      "load(\"@rules_cc//cc:defs.bzl\", \"cc_binary\")",
+      "",
+      "cc_binary(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.cpp\", \"$1.hpp\"],",
+      "    visibility = [\"//visibility:public\"],",
+      "    deps = [\"$0\"],",
+      ")"
+    ],
+    "description": "C++ binary with load statement"
+  },
+  "cuda_library": {
+    "prefix": "cuda_library",
+    "body": [
+      "load(\"//bazel/cuda:defs.bzl\", \"cuda_library\")",
+      "",
+      "cuda_library(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.cu\"],",
+      "    hdrs = [\"$1.cuh\"],",
+      "    visibility = [\"//visibility:public\"],",
+      "    deps = [\"$0\"],",
+      ")"
+    ],
+    "description": "CUDA library with load statement"
+  },
+  "cuda_binary": {
+    "prefix": "cuda_binary",
+    "body": [
+      "load(\"//bazel/cuda:defs.bzl\", \"cuda_binary\")",
+      "",
+      "cuda_binary(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.cu\"],",
+      "    visibility = [\"//visibility:public\"],",
+      "    deps = [\"$0\"],",
+      ")"
+    ],
+    "description": "CUDA binary with load statement"
+  },
+  "py_library": {
+    "prefix": "py_library",
+    "body": [
+      "load(\"@rules_python//python:defs.bzl\", \"py_library\")",
+      "load(\"@av_pip_deps//:requirements.bzl\", \"requirement\")",
+      "",
+      "py_library(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.py\"],",
+      "    visibility = [\"//visibility:public\"],",
+      "    deps = [",
+      "        requirement(\"$0\"),",
+      "    ],",
+      ")"
+    ],
+    "description": "Python library with load and pip requirements"
+  },
+  "py_binary": {
+    "prefix": "py_binary",
+    "body": [
+      "load(\"@rules_python//python:defs.bzl\", \"py_binary\")",
+      "load(\"@av_pip_deps//:requirements.bzl\", \"requirement\")",
+      "",
+      "py_binary(",
+      "    name = \"$1\",",
+      "    srcs = [\"$1.py\"],",
+      "    deps = [",
+      "        requirement(\"$0\"),",
+      "    ],",
+      "    visibility = [\"//visibility:public\"],",
+      ")"
+    ],
+    "description": "Python binary with load and pip requirements"
+  },
+  "pkg_files": {
+    "prefix": "pkg_files",
+    "body": [
+      "load(\"@rules_pkg//pkg:mappings.bzl\", \"pkg_attributes\", \"pkg_files\")",
+      "",
+      "pkg_files(",
+      "    name = \"$1_bin\",",
+      "    srcs = [",
+      "        \":$1\",",
+      "    ],",
+      "    attributes = pkg_attributes(mode = \"0777\"),",
+      "    prefix = package_name(),",
+      "    visibility = [\"//visibility:public\"],",
+      ")$0"
+    ],
+    "description": "Packaging files template with 0777 permissions"
+  },
+  "filegroup": {
+    "prefix": "filegroup",
+    "body": [
+      "filegroup(",
+      "    name = \"${1:config}_file\",",
+      "    srcs = [\"${1:config}.\"],",
+      "    visibility = [\"//visibility:public\"],",
+      ")$0"
+    ],
+    "description": "Generic filegroup template"
+  },
+  "http_archive": {
+    "prefix": "http_archive",
+    "body": [
+      "load(\"@bazel_tools//tools/build_defs/repo:http.bzl\", \"http_archive\")",
+      "",
+      "http_archive(",
+      "    name = \"$1\",",
+      "    build_file = \"//third_party/$1:$1.BUILD.bazel\",",
+      "    sha256 = \"$2\",",
+      "    strip_prefix = \"$1-$3\",",
+      "    urls = [\"$4\"],",
+      ")$0"
+    ],
+    "description": "Workspace http_archive template"
+  },
+  "git_repository": {
+    "prefix": "git_repository",
+    "body": [
+      "load(\"@bazel_tools//tools/build_defs/repo:git.bzl\", \"new_git_repository\")",
+      "",
+      "new_git_repository(",
+      "    name = \"$1\",",
+      "    remote = \"${2:https://github.com/}$3\",",
+      "    commit = \"$4\",",
+      "    build_file = \"//third_party/$1:$1.BUILD.bazel\",",
+      ")$0"
+    ],
+    "description": "New git repository template"
+  },
+  "cmake_configure_file": {
+    "prefix": "cmake_configure",
+    "body": [
+      "bazel_dep(name = \"cmake_configure_file\", version = \"0.1.4\")",
+      "load(\"@cmake_configure_file//:cmake_configure_file.bzl\", \"cmake_configure_file\")",
+      "",
+      "cmake_configure_file(",
+      "    name = \"${1:version_h}\",",
+      "    src = \"$2.in\",",
+      "    out = \"$2\",",
+      "    defines = [",
+      "        \"${3:VAR}=${4:VALUE}\",",
+      "    ],",
+      ")$0"
+    ],
+    "description": "CMake configure file template"
+  },
+  "bzlmod_http": {
+    "prefix": "module_http",
+    "body": [
+      "http_archive = use_repo_rule(\"@bazel_tools//tools/build_defs/repo:http.bzl\", \"http_archive\")",
+      "",
+      "http_archive(",
+      "    name = \"$1\",",
+      "    build_file = \"//:$1.BUILD.bazel\",",
+      "    sha256 = \"\",",
+      "    strip_prefix = \"\",",
+      "    urls = [\"https://\"],",
+      ")$0"
+    ],
+    "description": "Bzlmod use_repo_rule http_archive"
+  }
+}
