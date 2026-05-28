@@ -14,6 +14,7 @@ vim.filetype.add({
     [".bazelrc"] = "sh",
     [".yamllint"] = "yaml",
     ["jenkinsfile"] = "groovy",
+    ["MODULE.bazel"] = "bzl",
   },
   extension = {
     [".bzl"] = "bazel",
