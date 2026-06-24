@@ -11,3 +11,8 @@
 -- outline + breadcrumbs) list cc_binary / cc_library / py_binary / cuda_library
 -- targets by name. See lua/bazel_symbols.lua.
 require("bazel_symbols").setup()
+
+-- Bazel tools: build/test/run target under cursor, target & rdeps pickers,
+-- source <-> BUILD navigation. Commands :Bazel* + <localleader> maps.
+-- See lua/bazel_tools.lua and after/ftplugin/bzl.lua.
+require("bazel_tools").setup()

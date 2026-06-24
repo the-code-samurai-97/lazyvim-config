@@ -183,6 +183,66 @@ function M.document_symbols(bufnr)
   return symbols
 end
 
+---@class BazelTarget
+---@field name string        the `name = "..."` value
+---@field rule string        the rule/function, e.g. "cc_binary"
+---@field start_row integer  0-indexed first row of the call
+---@field end_row integer    0-indexed last row of the call
+
+-- Flat list of rule targets (top-level calls with a `name = "..."`), for tooling
+-- that needs the target under the cursor (build/test/run, yank label, ...).
+---@param bufnr integer
+---@return BazelTarget[]
+function M.targets(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return {}
+  end
+  local src = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), "\n")
+  local ok, parser = pcall(vim.treesitter.get_string_parser, src, "python")
+  if not ok or not parser then
+    return {}
+  end
+
+  local root = parser:parse()[1]:root()
+  local targets = {} ---@type BazelTarget[]
+  for i = 0, root:named_child_count() - 1 do
+    local stmt = root:named_child(i)
+    local inner = stmt:type() == "expression_statement" and stmt:named_child(0) or stmt
+    if inner and inner:type() == "call" then
+      local func = inner:field("function")[1]
+      local args = inner:field("arguments")[1]
+      if func and args and args:type() == "argument_list" then
+        local name_node = find_name_arg(args, src)
+        if name_node then
+          local sr, _, er = inner:range()
+          targets[#targets + 1] = {
+            name = string_value(name_node, src),
+            rule = vim.treesitter.get_node_text(func, src),
+            start_row = sr,
+            end_row = er,
+          }
+        end
+      end
+    end
+  end
+  return targets
+end
+
+-- The rule target whose block contains the given (0-indexed) row, or nil.
+---@param bufnr integer
+---@param row integer 0-indexed
+---@return BazelTarget?
+function M.target_at(bufnr, row)
+  local match ---@type BazelTarget?
+  for _, t in ipairs(M.targets(bufnr)) do
+    if t.start_row <= row and row <= t.end_row then
+      match = t -- last (innermost in source order) wins
+    end
+  end
+  return match
+end
+
 -- Factory for the in-process LSP server. See `:h vim.lsp.rpc.PublicClient`.
 ---@param dispatchers vim.lsp.rpc.Dispatchers
 ---@return vim.lsp.rpc.PublicClient
